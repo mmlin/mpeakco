@@ -5,9 +5,26 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /static
-  static_dir: static
+- url: /css
+  static_dir: css
+  
+- url: /img
+  static_dir: img
+  
+- url: /js
+  static_dir: js
+  
+- url: /lib
+  static_dir: lib
+  
+- url: /p/(.*)
+  static_files: page/\1.html
+  upload: page/.*
 
-- url: /.*
+- url: /
   static_files: index.html
   upload: index\.html
+
+- url: /.*
+  static_files: 404.html
+  upload: 404\.html

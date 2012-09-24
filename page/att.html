@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Webmeeting | Mike M. Lin</title>
+		<style type="text/css">
+			body {
+				color: #393939;
+				font-family: 'Helvetica Neue', Helvetica, sans-serif;
+				font-size: 12px;
+				padding: 50px;
+			}
+			
+			#content {
+				width: 200px;
+			}
+			
+			label {
+				display: block;
+			}
+			
+			input[type=text] {
+				border: 1px solid #bbb;
+				box-sizing: border-box;
+				display: block;
+				padding: 5px;
+				width: 100%;
+			}
+			
+			input[readonly=readonly] {
+				background-color: #eee;
+				color: #393939;
+			}
+			
+			p {
+				text-align: right;
+			}
+			
+			.ro {
+				disabled: disabled
+			}
+		</style>
+	</head>
+	<body>
+		<h1>AT&T Teleconference Services</h1>
+		<div id="content">
+			<form action="https://www.teleconference.att.com/servlet/AWMlogin" method="post">
+				<label>Meeting Number</label>
+				<input id="meetingNumber" name="meetingNumber" type="text" value="8882999680" readonly="readonly" />
+				
+				<label for="code">Code</label>
+				<input id="code" name="code" type="text" value="8899343" />
+				
+				<label>Email Address</label>
+				<input id="email" name="email" type="text" value="mmlin@directv.com" readonly="readonly" />
+				
+				<label>Enter Your Name</label>
+				<input id="userName" name="userName" type="text" value="Mike M. Lin" readonly="readonly" />
+				
+				<input name="process" type="hidden" value="1" />
+				<input name="brand" type="hidden" value="att" />
+				
+				<p><input type="submit"></p>
+			</form>
+		</div>
+		
+		<script>
+			var code = document.getElementById('code');
+			var urlParams = {};
+			
+			(function () {
+				var match,
+					pl     = /\+/g,  // Regex for replacing addition symbol with a space
+					search = /([^&=]+)=?([^&]*)/g,
+					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+					query  = window.location.search.substring(1);
+
+				while (match = search.exec(query))
+				   urlParams[decode(match[1])] = decode(match[2]);
+			})();
+			
+			// Example use of query params:
+			// http://mpeak.co/p/att?bridge=8882999680&code=4125500&email=mmlin@directv.com&name=Mike+M.+Lin
+			
+			if (urlParams.bridge) {
+				document.getElementById('meetingNumber').value = urlParams.bridge;
+			}
+			
+			if (urlParams.code) {
+				code.value = urlParams.code;
+			}
+			
+			if (urlParams.email) {
+				document.getElementById('email').value = urlParams.email;
+			}
+			
+			if (urlParams.name) {
+				document.getElementById('userName').value = urlParams.name;
+			}
+			
+			code.focus();
+			
+			// Remove non-numeric characters to make cut-and-paste more error-proof.
+			code.onblur = function() {
+				code.value = code.value.replace(/\D/g, '');
+			};
+		</script>
+	</body>
+</html>
