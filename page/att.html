@@ -43,7 +43,7 @@
 	<body>
 		<h1>AT&T Teleconference Services</h1>
 		<div id="content">
-			<form action="https://www.teleconference.att.com/servlet/AWMlogin" method="post">
+			<form action="https://www.teleconference.att.com/servlet/ATTClogin" method="post">
 				<label>Meeting Number</label>
 				<input id="meetingNumber" name="meetingNumber" type="text" value="8882999680" readonly="readonly" />
 				
@@ -53,8 +53,11 @@
 				<label>Email Address</label>
 				<input id="email" name="email" type="text" value="mmlin@directv.com" readonly="readonly" />
 				
-				<label>Enter Your Name</label>
-				<input id="userName" name="userName" type="text" value="Mike M. Lin" readonly="readonly" />
+				<label>First Name</label>
+				<input id="firstName" name="firstName" type="text" value="Mike" readonly="readonly" />
+				
+				<label>Last Name</label>
+				<input id="lastName" name="lastName" type="text" value="Lin" readonly="readonly" />
 				
 				<input name="process" type="hidden" value="1" />
 				<input name="brand" type="hidden" value="att" />
@@ -93,8 +96,25 @@
 				document.getElementById('email').value = urlParams.email;
 			}
 			
+			// AT&T no longer supports the userName field. It expects firstName and lastName separately.
+			// But that doesn't mean old links using user/userName need to stop working...
 			if (urlParams.name) {
-				document.getElementById('userName').value = urlParams.name;
+				var names = urlParams.name.split(/\s+/);
+				var last = names[names.length - 1];
+				if (names.length > 1)
+					names.pop();
+				var first = names.join(' ');
+
+				document.getElementById('firstName').value = first;
+				document.getElementById('lastName').value = last;
+			} else {
+				if (urlParams.firstName) {
+					document.getElementById('firstName').value = urlParams.first;
+				}
+				
+				if (urlParams.lastName) {
+					document.getElementById('lastName').value = urlParams.last;
+				}
 			}
 			
 			code.focus();
